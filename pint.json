@@ -1,0 +1,10 @@
+{
+  "preset": "laravel",
+  "exclude": [
+	"workbench"
+  ],
+  "rules": {
+	"declare_strict_types": true,
+	"strict_comparison": true
+  }
+}

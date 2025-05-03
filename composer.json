@@ -1,0 +1,70 @@
+{
+    "name": "aagjalpankaj/laravel-package-template",
+    "description": "Composer package template for Laravel",
+    "keywords": ["laravel", "package", "template", "composer"],
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^11.0|^12.0",
+        "illuminate/config": "^11.0|^12.0"
+    },
+    "require-dev": {
+        "pestphp/pest": "^3.8",
+        "laravel/pint": "^1.21",
+        "rector/rector": "^2.0",
+        "orchestra/testbench": "^10.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Aagjalpankaj\\LaravelPackageTemplate\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/",
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@clear",
+            "@prepare"
+        ],
+        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "build": "@php vendor/bin/testbench workbench:build --ansi",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@build",
+            "@php vendor/bin/testbench serve --ansi"
+        ],
+        "lint": ["pint --test"],
+        "lint.fix": ["pint"],
+		"rector": ["rector --dry-run"],
+		"rector.fix": ["rector"],
+        "test": [
+            "@clear",
+            "php -r \"echo PHP_EOL . (extension_loaded('xdebug') ? 'Xdebug enabled - Running with coverage' : 'Xdebug not enabled - Running without coverage') . PHP_EOL;\"",
+            "php -r \"passthru(extension_loaded('xdebug') ? 'pest --parallel --coverage --min=90 --colors=always' : 'pest --parallel --colors=always');\""
+        ],
+        "ci": ["@lint", "@rector", "@test"],
+        "ci.fix": ["@lint.fix", "@rector.fix"]
+	},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Aagjalpankaj\\LaravelPackageTemplate\\ServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
