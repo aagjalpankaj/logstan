@@ -2,12 +2,12 @@
 
 <p align="left">
 
-<a href="https://github.com/aagjalpankaj/laravel-package-template/actions/workflows/ci.yml">
-  <img src="https://github.com/aagjalpankaj/laravel-package-template/actions/workflows/ci.yml/badge.svg" alt="ci">
+<a href="https://github.com/aagjalpankaj/logstan/actions/workflows/ci.yml">
+  <img src="https://github.com/aagjalpankaj/logstan/actions/workflows/ci.yml/badge.svg" alt="ci">
 </a>
 
-<a href="https://packagist.org/packages/aagjalpankaj/laravel-package-template">
-  <img src="https://img.shields.io/packagist/dt/aagjalpankaj/laravel-package-template" alt="Downloads">
+<a href="https://packagist.org/packages/aagjalpankaj/logstan">
+  <img src="https://img.shields.io/packagist/dt/aagjalpankaj/logstan" alt="Downloads">
 </a>
 </p>
 
@@ -30,13 +30,13 @@ Composer package template for Laravel.
 #### Create project
 Create project by clicking on "Use this template" OR run:
 ```
-composer create-project aagjalpankaj/laravel-package-template:dev-main <your-package-name>
+composer create-project aagjalpankaj/logstan:dev-main <your-package-name>
 ```
 
 #### Replace (text & file names)
 - `Aagjalpankaj` with your namespace
-- `LaravelPackageTemplate` with your package name (camelcase)
-- `laravel-package-template` with your package name (lowercase hyphen separated)
+- `Logstan` with your package name (camelcase)
+- `logstan` with your package name (lowercase hyphen separated)
 
 ### Commands (useful while development)
 

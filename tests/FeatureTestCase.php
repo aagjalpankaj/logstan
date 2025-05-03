@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Aagjalpankaj\LaravelPackageTemplate\ServiceProvider;
+use Aagjalpankaj\Logstan\ServiceProvider;
 use Illuminate\Contracts\Config\Repository;
 use Orchestra\Testbench\TestCase;
 

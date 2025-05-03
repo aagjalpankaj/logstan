@@ -2,7 +2,7 @@ laravel: '@testbench'
 
 providers:
    - Workbench\App\Providers\WorkbenchServiceProvider
-   - Aagjalpankaj\LaravelPackageTemplate\ServiceProvider
+   - Aagjalpankaj\Logstan\ServiceProvider
 
 migrations:
   - workbench/database/migrations

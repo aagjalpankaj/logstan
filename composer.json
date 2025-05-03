@@ -1,5 +1,5 @@
 {
-    "name": "aagjalpankaj/laravel-package-template",
+    "name": "aagjalpankaj/logstan",
     "description": "Composer package template for Laravel",
     "keywords": ["laravel", "package", "template", "composer"],
     "license": "MIT",
@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Aagjalpankaj\\LaravelPackageTemplate\\": "src/"
+            "Aagjalpankaj\\Logstan\\": "src/"
         }
     },
     "autoload-dev": {
@@ -55,7 +55,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Aagjalpankaj\\LaravelPackageTemplate\\ServiceProvider"
+                "Aagjalpankaj\\Logstan\\ServiceProvider"
             ]
         }
     },
