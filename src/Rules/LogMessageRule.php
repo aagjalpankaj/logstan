@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Aagjalpankaj\Logstan\Rules;
 
+use Aagjalpankaj\Logstan\Concerns\IdentifiesLogCalls;
 use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Analyser\Scope;
@@ -15,6 +16,8 @@ use PHPStan\Rules\RuleErrorBuilder;
  */
 class LogMessageRule implements Rule
 {
+    use IdentifiesLogCalls;
+
     public function getNodeType(): string
     {
         return StaticCall::class;
@@ -22,23 +25,13 @@ class LogMessageRule implements Rule
 
     public function processNode(Node $node, Scope $scope): array
     {
-        // Only handle Log::level() static calls
-        if (! $node instanceof StaticCall) {
+        $logCall = $this->processLogCall($node, $scope);
+        if (! $logCall instanceof \PhpParser\Node\Expr\StaticCall) {
             return [];
         }
 
-        if (! $node->class instanceof Node\Name || $node->class->toString() !== \Illuminate\Support\Facades\Log::class) {
-            return [];
-        }
+        $args = $logCall->args;
 
-        $logLevels = ['info', 'debug', 'error', 'warning', 'notice', 'alert', 'critical', 'emergency'];
-        $methodName = $node->name instanceof Node\Identifier ? $node->name->name : null;
-
-        if (! in_array($methodName, $logLevels)) {
-            return [];
-        }
-
-        $args = $node->args;
         if (count($args) === 0) {
             return [];
         }
