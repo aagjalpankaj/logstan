@@ -25,8 +25,8 @@ class LogContextRule implements Rule
 
     public function processNode(Node $node, Scope $scope): array
     {
-        $logCall = $this->processLogCall($node, $scope);
-        if (! $logCall instanceof \PhpParser\Node\Expr\StaticCall) {
+        $logCall = $this->processLogCall($node);
+        if (! $logCall instanceof StaticCall) {
             return [];
         }
 
