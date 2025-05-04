@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Aagjalpankaj\Logstan\Stan\Rules;
+namespace Aagjalpankaj\Logstan\Rules;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;

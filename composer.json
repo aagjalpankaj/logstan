@@ -7,7 +7,8 @@
         "php": "^8.2",
         "illuminate/support": "^11.0|^12.0",
         "illuminate/config": "^11.0|^12.0",
-        "phpstan/phpstan": "^2.0"
+        "phpstan/phpstan": "^2.0",
+        "symfony/console": "^7.2"
     },
     "require-dev": {
         "pestphp/pest": "^3.8",
@@ -15,6 +16,9 @@
         "rector/rector": "^2.0",
         "orchestra/testbench": "^10.1"
     },
+    "bin": [
+        "bin/logstan"
+    ],
     "autoload": {
         "psr-4": {
             "Aagjalpankaj\\Logstan\\": "src/"

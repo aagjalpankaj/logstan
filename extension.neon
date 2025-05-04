@@ -1,9 +1,9 @@
 services:
     -
-        class: Aagjalpankaj\Logstan\Stan\Rules\LogMessageRule
+        class: Aagjalpankaj\Logstan\Rules\LogMessageRule
         tags:
             - phpstan.rules.rule
     -
-        class: Aagjalpankaj\Logstan\Stan\Rules\LogContextRule
+        class: Aagjalpankaj\Logstan\Rules\LogContextRule
         tags:
             - phpstan.rules.rule
