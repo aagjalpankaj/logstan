@@ -1,4 +1,4 @@
-# Laravel Package Template
+# Logstan
 
 <p align="left">
 
@@ -12,42 +12,24 @@
 </p>
 
 ## About
-Composer package template for Laravel.
+Statically analyse logs and get quick insights.
 
-**Includes:**
+> **Warning**
+> This package is a work in progress. functionalities may change without any notice.
 
-✨ **PestPHP:** Feature, Unit & Architecture testsuites using PestPHP
 
-✨ **Workbench:** to write Integration testing
+## Installation
 
-✨ **Rector:** for refactoring
-
-✨ **Pint:** for code-styling
-
+```
+composer require --dev aagjalpankaj/logstan
+```
 
 ## Usage
 
-#### Create project
-Create project by clicking on "Use this template" OR run:
 ```
-composer create-project aagjalpankaj/logstan:dev-main <your-package-name>
+./vendor/bin/logstan analyse
 ```
 
-#### Replace (text & file names)
-- `Aagjalpankaj` with your namespace
-- `Logstan` with your package name (camelcase)
-- `logstan` with your package name (lowercase hyphen separated)
-
-### Commands (useful while development)
-
-Run all checks:
 ```
-composer ci
+./vendor/bin/logstan insights
 ```
-
-Fix issues:
-```
-composer ci.fix
-```
-
-**Good luck 🤞**
