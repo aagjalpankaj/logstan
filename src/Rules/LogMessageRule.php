@@ -43,10 +43,14 @@ class LogMessageRule implements Rule
         }
 
         $message = $messageArg->value;
-        if (strlen($message) > 5) {
+        if (strlen($message) > 50) {
             return [
                 RuleErrorBuilder::message(
-                    sprintf('Log message "%s" is too long (%d characters)', $message, strlen($message))
+                    sprintf(
+                        'Log message "%s" is too long (%d characters, expected max 50)',
+                        $message,
+                        strlen($message)
+                    )
                 )->build(),
             ];
         }

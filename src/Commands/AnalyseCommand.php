@@ -6,6 +6,7 @@ namespace Aagjalpankaj\Logstan\Commands;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
@@ -13,6 +14,18 @@ use Symfony\Component\Process\Process;
 #[AsCommand(name: 'analyse')]
 class AnalyseCommand extends Command
 {
+    protected function configure(): void
+    {
+        $this
+            ->setDescription('Analyse logs')
+            ->addArgument(
+                'directory',
+                InputArgument::OPTIONAL,
+                'Source to analyse',
+                'app'
+            );
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Analysing logs...</info>');
@@ -27,9 +40,10 @@ class AnalyseCommand extends Command
             'app',
             '--configuration='.$configPath,
             '--ansi',
+            '--debug',
+            '--memory-limit=-1',
         ];
 
-        // Create and run the process
         $process = new Process($command);
         $process->setTimeout(null);
 

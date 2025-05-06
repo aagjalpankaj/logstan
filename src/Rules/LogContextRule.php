@@ -10,6 +10,9 @@ use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
+use PHPStan\Type\ArrayType;
+use PHPStan\Type\ObjectType;
+use PHPStan\Type\VerbosityLevel;
 
 /**
  * @implements Rule<StaticCall>
@@ -36,10 +39,8 @@ class LogContextRule implements Rule
             return [];
         }
 
-        // Check if there's a context array
         $contextArg = $args[1]->value;
 
-        // If it's not an array, report an error
         if (! $contextArg instanceof Node\Expr\Array_) {
             return [
                 RuleErrorBuilder::message('Log context must be an array')->build(),
@@ -48,26 +49,29 @@ class LogContextRule implements Rule
 
         $errors = [];
 
-        // Check each item in the context array
         foreach ($contextArg->items as $item) {
             if ($item === null) {
                 continue;
             }
 
-            // Check if the key is a string
             if ($item->key instanceof Node\Scalar\String_) {
                 $key = $item->key->value;
 
-                if ($this->isSensitiveKey($key)) {
+                if (! $this->isCamelCase($item->key->value)) {
                     $errors[] = RuleErrorBuilder::message(
-                        sprintf('Context key "%s" appears to contain sensitive information', $key)
+                        sprintf('Context key "%s" should be in camelCase format', $item->key->value)
                     )->build();
                 }
 
-                // Check if the value is a scalar
-                if (! $this->isScalarValue($item->value)) {
+                $valueType = $scope->getType($item->value);
+
+                if ($valueType instanceof ObjectType || $valueType instanceof ArrayType) {
                     $errors[] = RuleErrorBuilder::message(
-                        sprintf('Context key "%s" must have a scalar value', $key)
+                        sprintf(
+                            'Context key "%s" must have a scalar value, %s provided',
+                            $key,
+                            $valueType->describe(VerbosityLevel::typeOnly())
+                        )
                     )->build();
                 }
             }
@@ -76,45 +80,8 @@ class LogContextRule implements Rule
         return $errors;
     }
 
-    private function isScalarValue(Node $node): bool
+    private function isCamelCase(string $string): bool
     {
-        return $node instanceof Node\Scalar\String_
-            || $node instanceof Node\Scalar\LNumber
-            || $node instanceof Node\Scalar\DNumber
-            || $node instanceof Node\Expr\ConstFetch && in_array($node->name->toString(), ['true', 'false', 'null']);
-    }
-
-    private function isSensitiveKey(string $key): bool
-    {
-        $sensitivePatterns = [
-            'password',
-            'passwd',
-            'secret',
-            'credential',
-            'token',
-            'auth',
-            'key',
-            'api_key',
-            'apikey',
-            'access_token',
-            'refresh_token',
-            'private',
-            'ssn',
-            'social_security',
-            'credit_card',
-            'card_number',
-            'cvv',
-            'pin',
-        ];
-
-        $lowercaseKey = strtolower($key);
-
-        foreach ($sensitivePatterns as $pattern) {
-            if (str_contains($lowercaseKey, $pattern)) {
-                return true;
-            }
-        }
-
-        return false;
+        return preg_match('/^[a-z][a-zA-Z0-9]*$/', $string) === 1;
     }
 }

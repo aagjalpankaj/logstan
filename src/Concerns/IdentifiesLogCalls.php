@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Aagjalpankaj\Logstan\Concerns;
 
+use Aagjalpankaj\Logstan\Enums\LogLevel;
 use Illuminate\Support\Facades\Log;
 use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
@@ -26,7 +27,7 @@ trait IdentifiesLogCalls
             return false;
         }
 
-        $logLevels = ['info', 'debug', 'error', 'warning', 'notice', 'alert', 'critical', 'emergency'];
+        $logLevels = LogLevel::values();
 
         return in_array($node->name->name, $logLevels);
     }
