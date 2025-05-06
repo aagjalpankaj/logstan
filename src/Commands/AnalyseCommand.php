@@ -8,6 +8,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
@@ -21,8 +22,21 @@ class AnalyseCommand extends Command
             ->addArgument(
                 'directory',
                 InputArgument::OPTIONAL,
-                'Source to analyse',
+                'Source directory to analyse',
                 'app'
+            )
+            ->addOption(
+                'debug',
+                'd',
+                InputOption::VALUE_NONE,
+                'Enable debug mode (disables caching as well)'
+            )
+            ->addOption(
+                'memory-limit',
+                'm',
+                InputOption::VALUE_REQUIRED,
+                'Set the memory limit',
+                '-1'
             );
     }
 
@@ -37,11 +51,11 @@ class AnalyseCommand extends Command
         $command = [
             './vendor/bin/phpstan',
             'analyse',
-            'app',
+            $input->getArgument('directory'),
             '--configuration='.$configPath,
             '--ansi',
-            '--debug',
-            '--memory-limit=-1',
+            $input->getOption('debug') ? '--debug' : '',
+            '--memory-limit='.$input->getOption('memory-limit'),
         ];
 
         $process = new Process($command);
