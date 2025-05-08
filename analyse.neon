@@ -7,3 +7,7 @@ services:
         class: Aagjalpankaj\Logstan\Rules\LogContextRule
         tags:
             - phpstan.rules.rule
+
+parameters:
+    customRulesetUsed: true
+    reportUnmatchedIgnoredErrors: false

@@ -48,7 +48,7 @@ class AnalyseCommand extends Command
             './vendor/bin/phpstan',
             'analyse',
             $input->getArgument('directory'),
-            '--configuration=vendor/aagjalpankaj/logstan/phpstan.neon',
+            '--configuration=vendor/aagjalpankaj/logstan/analyse.neon',
             '--memory-limit='.$input->getOption('memory-limit'),
             '--no-progress',
             '--ansi',
