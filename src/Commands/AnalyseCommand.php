@@ -12,6 +12,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
+use function Laravel\Prompts\spin;
+
 #[AsCommand(name: 'analyse')]
 class AnalyseCommand extends Command
 {
@@ -42,15 +44,11 @@ class AnalyseCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln('<info>Analysing logs...</info>');
-
-        $configPath = $this->getConfigPath();
-
         $command = [
             './vendor/bin/phpstan',
             'analyse',
             $input->getArgument('directory'),
-            '--configuration='.$configPath,
+            '--configuration=vendor/aagjalpankaj/logstan/phpstan.neon',
             '--memory-limit='.$input->getOption('memory-limit'),
             '--no-progress',
             '--ansi',
@@ -60,21 +58,29 @@ class AnalyseCommand extends Command
             $command[] = '--debug';
         }
 
-        $process = new Process($command);
-        $process->setTimeout(null);
+        $process = new Process(
+            command: $command,
+            env: array_merge($_ENV, ['COLUMNS' => '200']),
+            timeout: null
+        );
 
-        $output->writeln('<comment>Running: '.implode(' ', $command).'</comment>');
+        if ($input->getOption('debug')) {
+            $output->writeln('<comment>Command:</comment> '.implode(' ', $command));
+        }
+
         $output->writeln('');
 
-        $process->run(function ($type, $buffer) use ($output): void {
-            $output->write($buffer);
-        });
+        spin(
+            callback: function () use ($process): void {
+                $process->start();
+
+                while ($process->isRunning()) {
+                    usleep(100000);
+                }
+            }, message: 'Analysing logs...');
+
+        $output->write($process->getOutput());
 
         return $process->isSuccessful() ? Command::SUCCESS : Command::FAILURE;
-    }
-
-    private function getConfigPath(): string
-    {
-        return 'vendor/aagjalpankaj/logstan/phpstan.neon';
     }
 }
