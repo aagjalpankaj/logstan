@@ -44,19 +44,21 @@ class AnalyseCommand extends Command
     {
         $output->writeln('<info>Analysing logs...</info>');
 
-        // Get the path to our custom configuration
         $configPath = $this->getConfigPath();
 
-        // Build the command
         $command = [
             './vendor/bin/phpstan',
             'analyse',
             $input->getArgument('directory'),
             '--configuration='.$configPath,
-            '--ansi',
-            $input->getOption('debug') ? '--debug' : '',
             '--memory-limit='.$input->getOption('memory-limit'),
+            '--no-progress',
+            '--ansi',
         ];
+
+        if ($input->getOption('debug')) {
+            $command[] = '--debug';
+        }
 
         $process = new Process($command);
         $process->setTimeout(null);
