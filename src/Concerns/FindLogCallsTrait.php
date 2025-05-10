@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
 
-trait IdentifiesLogCalls
+trait FindLogCallsTrait
 {
     protected function isLogCall(Node $node): bool
     {

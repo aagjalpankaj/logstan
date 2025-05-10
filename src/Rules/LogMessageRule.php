@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Aagjalpankaj\Logstan\Rules;
 
-use Aagjalpankaj\Logstan\Concerns\IdentifiesLogCalls;
+use Aagjalpankaj\Logstan\Concerns\FindLogCallsTrait;
 use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Analyser\Scope;
@@ -16,7 +16,7 @@ use PHPStan\Rules\RuleErrorBuilder;
  */
 class LogMessageRule implements Rule
 {
-    use IdentifiesLogCalls;
+    use FindLogCallsTrait;
 
     public function getNodeType(): string
     {

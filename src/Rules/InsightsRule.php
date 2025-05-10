@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Aagjalpankaj\Logstan\Rules;
 
-use Aagjalpankaj\Logstan\Concerns\IdentifiesLogCalls;
+use Aagjalpankaj\Logstan\Concerns\FindLogCallsTrait;
 use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Analyser\Scope;
@@ -15,7 +15,7 @@ use PHPStan\Rules\Rule;
  */
 class InsightsRule implements Rule
 {
-    use IdentifiesLogCalls;
+    use FindLogCallsTrait;
 
     /** @var array<string, array<string, int>> */
     private static array $logStats = [];
@@ -66,9 +66,6 @@ class InsightsRule implements Rule
         return [];
     }
 
-    /**
-     * Save log statistics to a file that can be read by InsightsCommand
-     */
     private function saveLogStats(): void
     {
         $statsDir = sys_get_temp_dir().'/logstan';
@@ -82,9 +79,6 @@ class InsightsRule implements Rule
         );
     }
 
-    /**
-     * Get the total number of log calls
-     */
     public static function getTotalLogCalls(): int
     {
         $total = 0;
@@ -95,11 +89,6 @@ class InsightsRule implements Rule
         return $total;
     }
 
-    /**
-     * Get all log statistics
-     *
-     * @return array<string, array<string, int>>
-     */
     public static function getLogStats(): array
     {
         return self::$logStats;
