@@ -171,5 +171,34 @@ class InsightsCommand extends Command
         }
 
         $table->render();
+
+        $table->render();
+        $output->writeln('');
+
+        // Display all context keys
+        $output->writeln('<info>All Context Keys:</info>');
+
+        $contextKeyCounts = [];
+        foreach ($stats as $fileStats) {
+            if (isset($fileStats['contextKeys'])) {
+                foreach ($fileStats['contextKeys'] as $key => $count) {
+                    if (! isset($contextKeyCounts[$key])) {
+                        $contextKeyCounts[$key] = 0;
+                    }
+                    $contextKeyCounts[$key] += $count;
+                }
+            }
+        }
+
+        arsort($contextKeyCounts);
+
+        $table = new Table($output);
+        $table->setHeaders(['Context Key', 'Count']);
+
+        foreach ($contextKeyCounts as $key => $count) {
+            $table->addRow([$key, $count]);
+        }
+
+        $table->render();
     }
 }

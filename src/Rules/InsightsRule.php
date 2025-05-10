@@ -17,7 +17,7 @@ class InsightsRule implements Rule
 {
     use FindLogCallsTrait;
 
-    /** @var array<string, array<string, int>> */
+    /** @var array<string, array<string, mixed>> */
     private static array $logStats = [];
 
     public function getNodeType(): string
@@ -38,29 +38,37 @@ class InsightsRule implements Rule
             return [];
         }
 
-        // Track log call statistics
         $file = $scope->getFile();
-        $node->getLine();
         $method = $logCall->name->toString();
 
-        // Initialize file entry if it doesn't exist
         if (! isset(self::$logStats[$file])) {
             self::$logStats[$file] = [
                 'total' => 0,
                 'methods' => [],
+                'contextKeys' => [],
             ];
         }
 
-        // Increment total count for this file
         self::$logStats[$file]['total']++;
 
-        // Track method usage
         if (! isset(self::$logStats[$file]['methods'][$method])) {
             self::$logStats[$file]['methods'][$method] = 0;
         }
         self::$logStats[$file]['methods'][$method]++;
 
-        // Store this data in a way that can be accessed by InsightsCommand
+        // Process context keys
+        if (count($args) >= 2 && $args[1]->value instanceof Node\Expr\Array_) {
+            foreach ($args[1]->value->items as $item) {
+                if ($item !== null && $item->key instanceof Node\Scalar\String_) {
+                    $contextKey = $item->key->value;
+                    if (! isset(self::$logStats[$file]['contextKeys'][$contextKey])) {
+                        self::$logStats[$file]['contextKeys'][$contextKey] = 0;
+                    }
+                    self::$logStats[$file]['contextKeys'][$contextKey]++;
+                }
+            }
+        }
+
         $this->saveLogStats();
 
         return [];
@@ -77,20 +85,5 @@ class InsightsRule implements Rule
             $statsDir.'/log_stats.json',
             json_encode(self::$logStats, JSON_PRETTY_PRINT)
         );
-    }
-
-    public static function getTotalLogCalls(): int
-    {
-        $total = 0;
-        foreach (self::$logStats as $fileStats) {
-            $total += $fileStats['total'];
-        }
-
-        return $total;
-    }
-
-    public static function getLogStats(): array
-    {
-        return self::$logStats;
     }
 }
