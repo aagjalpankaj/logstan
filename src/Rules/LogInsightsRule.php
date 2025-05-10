@@ -13,7 +13,7 @@ use PHPStan\Rules\Rule;
 /**
  * @implements Rule<StaticCall>
  */
-class InsightsRule implements Rule
+class LogInsightsRule implements Rule
 {
     use LocatesLogCall;
 

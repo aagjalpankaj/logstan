@@ -1,6 +1,6 @@
 services:
     -
-        class: Aagjalpankaj\Logstan\Rules\InsightsRule
+        class: Aagjalpankaj\Logstan\Rules\LogInsightsRule
         tags:
             - phpstan.rules.rule
 
