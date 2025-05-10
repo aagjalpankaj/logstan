@@ -109,15 +109,12 @@ class InsightsCommand extends Command
             return;
         }
 
-        // Calculate totals
         $totalCalls = 0;
         $methodCounts = [];
-        $fileCount = count($stats);
 
-        foreach ($stats as $file => $fileStats) {
+        foreach ($stats as $fileStats) {
             $totalCalls += $fileStats['total'];
 
-            // Aggregate method counts
             if (isset($fileStats['methods'])) {
                 foreach ($fileStats['methods'] as $method => $count) {
                     if (! isset($methodCounts[$method])) {
@@ -128,15 +125,12 @@ class InsightsCommand extends Command
             }
         }
 
-        // Display summary
         $output->writeln('');
         $output->writeln('<info>📊 Log Usage Insights</info>');
         $output->writeln('');
         $output->writeln(sprintf('Total log calls: <comment>%d</comment>', $totalCalls));
-        $output->writeln(sprintf('Files with logs: <comment>%d</comment>', $fileCount));
         $output->writeln('');
 
-        // Display log level distribution
         $output->writeln('<info>Log Level Distribution:</info>');
 
         $table = new Table($output);
@@ -149,33 +143,9 @@ class InsightsCommand extends Command
         }
 
         $table->render();
+
         $output->writeln('');
 
-        // Display top files with most log calls
-        $output->writeln('<info>Top Files by Log Usage:</info>');
-
-        $fileStats = [];
-        foreach ($stats as $file => $data) {
-            $fileStats[$file] = $data['total'];
-        }
-
-        arsort($fileStats);
-        $topFiles = array_slice($fileStats, 0, 10, true);
-
-        $table = new Table($output);
-        $table->setHeaders(['File', 'Log Calls']);
-
-        foreach ($topFiles as $file => $count) {
-            $shortFile = basename(dirname($file)).'/'.basename($file);
-            $table->addRow([$shortFile, $count]);
-        }
-
-        $table->render();
-
-        $table->render();
-        $output->writeln('');
-
-        // Display all context keys
         $output->writeln('<info>All Context Keys:</info>');
 
         $contextKeyCounts = [];
@@ -200,5 +170,8 @@ class InsightsCommand extends Command
         }
 
         $table->render();
+
+        $output->writeln('');
+        $output->writeln(sprintf('Total unique context keys: <comment>%d</comment>', count($contextKeyCounts)));
     }
 }

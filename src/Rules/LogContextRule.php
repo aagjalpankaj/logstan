@@ -60,6 +60,6 @@ class LogContextRule implements Rule
 
         $errors = (new LogContextValidator)->validate($context);
 
-        return array_map(fn($error): \PHPStan\Rules\RuleError => RuleErrorBuilder::message($error)->build(), $errors);
+        return array_map(fn ($error): \PHPStan\Rules\RuleError => RuleErrorBuilder::message($error)->build(), $errors);
     }
 }
