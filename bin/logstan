@@ -1,21 +1,15 @@
 #!/usr/bin/env php
 <?php
 
-// Determine the autoloader path
-if (file_exists(__DIR__.'/../../../autoload.php')) {
-    require __DIR__.'/../../../autoload.php';
-} elseif (file_exists(__DIR__.'/../vendor/autoload.php')) {
-    require __DIR__.'/../vendor/autoload.php';
-} else {
-    fwrite(STDERR, 'Install dependencies using Composer.'.PHP_EOL);
-    exit(1);
-}
+include $_composer_autoload_path ?? __DIR__ . '/../autoload.php';
 
 use Aagjalpankaj\Logstan\Commands\AnalyseCommand;
+use Aagjalpankaj\Logstan\Commands\InsightsCommand;
 use Symfony\Component\Console\Application;
 
-$app = new Application('Logstan', '0.0.1');
+$app = new Application('Logstan', '0.1.0');
 
 $app->add(new AnalyseCommand());
+$app->add(new InsightsCommand());
 
 $app->run();

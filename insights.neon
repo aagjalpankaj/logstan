@@ -1,0 +1,9 @@
+services:
+    -
+        class: Aagjalpankaj\Logstan\Rules\InsightsRule
+        tags:
+            - phpstan.rules.rule
+
+parameters:
+    customRulesetUsed: true
+    reportUnmatchedIgnoredErrors: false
