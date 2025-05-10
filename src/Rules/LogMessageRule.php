@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Aagjalpankaj\Logstan\Rules;
 
 use Aagjalpankaj\Logstan\Concerns\LocatesLogCall;
+use Aagjalpankaj\Logstan\Validators\LogMessageValidator;
 use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Analyser\Scope;
@@ -43,16 +44,10 @@ class LogMessageRule implements Rule
         }
 
         $message = $messageArg->value;
-        if (strlen($message) > 50) {
-            return [
-                RuleErrorBuilder::message(
-                    sprintf(
-                        'Log message "%s" is too long (%d characters, expected max 50)',
-                        $message,
-                        strlen($message)
-                    )
-                )->build(),
-            ];
+        $errors = (new LogMessageValidator)->validate($message);
+
+        if ($errors !== []) {
+            return array_map(fn($error): \PHPStan\Rules\RuleError => RuleErrorBuilder::message($error)->build(), $errors);
         }
 
         return [];
