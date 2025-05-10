@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Aagjalpankaj\Logstan\Rules;
 
-use Aagjalpankaj\Logstan\Concerns\FindLogCallsTrait;
+use Aagjalpankaj\Logstan\Concerns\LocatesLogCall;
 use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Analyser\Scope;
@@ -15,7 +15,7 @@ use PHPStan\Rules\Rule;
  */
 class InsightsRule implements Rule
 {
-    use FindLogCallsTrait;
+    use LocatesLogCall;
 
     /** @var array<string, array<string, mixed>> */
     private static array $logStats = [];
