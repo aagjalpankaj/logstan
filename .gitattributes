@@ -5,7 +5,5 @@
 README.md               export-ignore
 rector.php              export-ignore
 pint.json               export-ignore
-workbench               export-ignore
 composer.lock           export-ignore
 phpunit.xml             export-ignore
-testbench.yaml          export-ignore

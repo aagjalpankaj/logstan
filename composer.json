@@ -5,17 +5,15 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "illuminate/support": "^11.0|^12.0",
-        "illuminate/config": "^11.0|^12.0",
         "phpstan/phpstan": "^2.0",
-        "symfony/console": "^7.2",
-        "laravel/prompts": "^0.3.5"
+        "symfony/console": "^7.0",
+        "laravel/prompts": "^0.3",
+        "illuminate/support": "^11.0|^12.0"
     },
     "require-dev": {
         "pestphp/pest": "^3.8",
         "laravel/pint": "^1.21",
-        "rector/rector": "^2.0",
-        "orchestra/testbench": "^10.1"
+        "rector/rector": "^2.0"
     },
     "bin": [
         "bin/logstan"
@@ -27,10 +25,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/",
-            "Workbench\\App\\": "workbench/app/",
-            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
-            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+            "Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -38,13 +33,9 @@
             "@clear",
             "@prepare"
         ],
-        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
-        "prepare": "@php vendor/bin/testbench package:discover --ansi",
-        "build": "@php vendor/bin/testbench workbench:build --ansi",
         "serve": [
             "Composer\\Config::disableProcessTimeout",
-            "@build",
-            "@php vendor/bin/testbench serve --ansi"
+            "@build"
         ],
         "lint": ["pint --test"],
         "lint.fix": ["pint"],
@@ -59,11 +50,6 @@
         "ci.fix": ["@lint.fix", "@rector.fix"]
 	},
     "extra": {
-        "laravel": {
-            "providers": [
-                "Aagjalpankaj\\Logstan\\ServiceProvider"
-            ]
-        }
     },
     "config": {
         "preferred-install": "dist",
