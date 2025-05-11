@@ -1,7 +1,7 @@
 {
     "name": "aagjalpankaj/logstan",
     "description": "PHPStan extension for Laravel applications to enforce consistent logging practices.",
-    "keywords": ["laravel", "logs", "consistency", "phpstan"],
+    "keywords": ["laravel", "logs", "consistency", "phpstan", "dev"],
     "license": "MIT",
     "require": {
         "php": "^8.2",

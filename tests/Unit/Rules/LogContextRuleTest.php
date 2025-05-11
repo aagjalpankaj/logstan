@@ -4,29 +4,29 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Rules;
 
-use Aagjalpankaj\Logstan\Rules\LogMessageRule;
+use Aagjalpankaj\Logstan\Rules\LogContextRule;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 
 /**
- * @extends RuleTestCase<LogMessageRule>
+ * @extends RuleTestCase<LogContextRule>
  */
-class LogMessageRuleTest extends RuleTestCase
+class LogContextRuleTest extends RuleTestCase
 {
     protected function getRule(): Rule
     {
-        return new LogMessageRule;
+        return new LogContextRule;
     }
 
-    public function test_log_message(): void
+    public function test_log_context(): void
     {
         $this->analyse(
             [
-                __DIR__.'/../../Dataset/logs-messages.php',
+                __DIR__.'/../../Dataset/logs-contexts.php',
             ],
             [
                 [
-                    'Log message "order created" should start with an uppercase letter.',
+                    'Log context key "orderId" should be in snake_case format.',
                     7,
                 ],
             ]

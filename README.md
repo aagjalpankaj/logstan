@@ -16,8 +16,6 @@ Logstan is a PHPStan extension designed for Laravel applications to enforce cons
 
 ## Installation
 
-You can install Logstan via Composer:
-
 ```bash
 composer require --dev aagjalpankaj/logstan
 ```
@@ -29,14 +27,14 @@ composer require --dev aagjalpankaj/logstan
 ```bash
 ./vendor/bin/logstan analyse
 ```
-This command will scan your Laravel application for log calls and report any inconsistencies or potential problems.
+This command will scan your application and report any inconsistencies or potential problems.
 
 ### Getting Insights
 
 ```bash
 ./vendor/bin/logstan insights
 ```
-This command provides valuable information about your logging practices.
+This command provides insights about logs added in the application.
 
 ### Help
 

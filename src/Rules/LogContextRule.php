@@ -12,6 +12,7 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleError;
 use PHPStan\Rules\RuleErrorBuilder;
+use PHPStan\Type\VerbosityLevel;
 
 /**
  * @implements Rule<StaticCall>
@@ -55,7 +56,7 @@ class LogContextRule implements Rule
                 continue;
             }
             $key = $item->key->value;
-            $value = $scope->getType($item->value)->describe(\PHPStan\Type\VerbosityLevel::value());
+            $value = $scope->getType($item->value)->describe(VerbosityLevel::value());
             $context[$key] = $value;
         }
 
