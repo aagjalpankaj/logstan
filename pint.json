@@ -1,8 +1,6 @@
 {
   "preset": "laravel",
-  "exclude": [
-	"workbench"
-  ],
+  "exclude": [],
   "rules": {
 	"declare_strict_types": true,
 	"strict_comparison": true

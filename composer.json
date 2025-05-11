@@ -1,7 +1,7 @@
 {
     "name": "aagjalpankaj/logstan",
-    "description": "Composer package template for Laravel",
-    "keywords": ["laravel", "package", "template", "composer"],
+    "description": "PHPStan extension for Laravel applications to enforce consistent logging practices.",
+    "keywords": ["laravel", "logs", "consistency", "phpstan"],
     "license": "MIT",
     "require": {
         "php": "^8.2",
