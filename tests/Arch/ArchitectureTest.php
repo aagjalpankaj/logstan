@@ -4,16 +4,22 @@ declare(strict_types=1);
 
 arch('Commands')
     ->expect('Aagjalpankaj\Logstan\Commands')
-    ->toHaveSuffix('Command');
+    ->toHaveSuffix('Command')
+    ->toExtend('Symfony\Component\Console\Command\Command');
 
-arch('Middlewares')
-    ->expect('Aagjalpankaj\Logstan\Middlewares')
-    ->toHaveSuffix('Middleware');
+arch('Concerns')
+    ->expect('Aagjalpankaj\Logstan\Concerns')
+    ->toBeTraits();
 
-arch('Dtos')
-    ->expect('Aagjalpankaj\Logstan\Dtos')
-    ->toHaveSuffix('Dto');
+arch('Enums')
+    ->expect('Aagjalpankaj\Logstan\Enums')
+    ->toBeEnums();
 
-arch('Exceptions')
-    ->expect('Aagjalpankaj\Logstan\Exceptions')
-    ->toHaveSuffix('Exception');
+arch('Rules')
+    ->expect('Aagjalpankaj\Logstan\Rules')
+    ->toHaveSuffix('Rule')
+    ->toImplement('PHPStan\Rules\Rule');
+
+arch('Validators')
+    ->expect('Aagjalpankaj\Logstan\Validators')
+    ->toHaveSuffix('Validator');
