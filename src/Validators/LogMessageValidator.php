@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace Aagjalpankaj\Logstan\Validators;
 
+use Aagjalpankaj\Logstan\Concerns\SensitiveTerms;
+
 class LogMessageValidator
 {
-    private const MAX_LENGTH = 120;
+    use SensitiveTerms;
 
-    private const SENSITIVE_TERMS = [
-        'password',
-        'secret',
-        'key',
-        'apiKey',
-        'token',
-    ];
+    private const MAX_LENGTH = 120;
 
     public function validate(string $message): array
     {

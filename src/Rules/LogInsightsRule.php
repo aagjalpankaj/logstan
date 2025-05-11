@@ -56,7 +56,6 @@ class LogInsightsRule implements Rule
         }
         self::$logStats[$file]['methods'][$method]++;
 
-        // Process context keys
         if (count($args) >= 2 && $args[1]->value instanceof Node\Expr\Array_) {
             foreach ($args[1]->value->items as $item) {
                 if ($item !== null && $item->key instanceof Node\Scalar\String_) {

@@ -10,6 +10,7 @@ use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
+use PHPStan\Rules\RuleError;
 use PHPStan\Rules\RuleErrorBuilder;
 
 /**
@@ -60,6 +61,6 @@ class LogContextRule implements Rule
 
         $errors = (new LogContextValidator)->validate($context);
 
-        return array_map(fn ($error): \PHPStan\Rules\RuleError => RuleErrorBuilder::message($error)->build(), $errors);
+        return array_map(fn ($error): RuleError => RuleErrorBuilder::message($error)->build(), $errors);
     }
 }

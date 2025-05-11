@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Aagjalpankaj\Logstan\Validators;
 
+use Aagjalpankaj\Logstan\Concerns\SensitiveTerms;
+
 class LogContextValidator
 {
+    use SensitiveTerms;
+
     private const MAX_KEYS = 10;
 
     private const MAX_VALUE_LENGTH = 100;
@@ -15,7 +19,11 @@ class LogContextValidator
         $errors = [];
 
         if (count($context) > self::MAX_KEYS) {
-            $errors[] = sprintf('Log context has too many keys (%d). Maximum allowed is %d.', count($context), self::MAX_KEYS);
+            $errors[] = sprintf(
+                'Log context has too many keys (%d). Maximum allowed is %d.',
+                count($context),
+                self::MAX_KEYS
+            );
         }
 
         foreach ($context as $key => $value) {
@@ -36,13 +44,25 @@ class LogContextValidator
             }
 
             if (is_array($value) || is_object($value)) {
-                $errors[] = sprintf('Log context value for key "%s" must be a scalar or null. Found: %s', $key, gettype($value));
+                $errors[] = sprintf(
+                    'Log context value for key "%s" must be a scalar or null. Found: %s',
+                    $key,
+                    gettype($value)
+                );
             } elseif (is_string($value) && strlen($value) > self::MAX_VALUE_LENGTH) {
-                $errors[] = sprintf('Log context value for key "%s" is too long (%d characters). Maximum allowed is %d.', $key, strlen($value), self::MAX_VALUE_LENGTH);
+                $errors[] = sprintf(
+                    'Log context value for key "%s" is too long (%d characters). Maximum allowed is %d.',
+                    $key,
+                    strlen($value),
+                    self::MAX_VALUE_LENGTH
+                );
             }
 
-            if (preg_match('/\b(password|secret|key)\b/i', $key)) {
-                $errors[] = sprintf('Log context key "%s" contains sensitive information.', $key);
+            foreach (self::SENSITIVE_TERMS as $term) {
+                if (stripos($key, $term) !== false) {
+                    $errors[] = sprintf('Log context key "%s" contains sensitive information.', $key);
+                    break;
+                }
             }
         }
 
