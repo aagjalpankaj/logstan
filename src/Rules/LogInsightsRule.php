@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Aagjalpankaj\Logstan\Rules;
 
-use Aagjalpankaj\Logstan\Concerns\LocatesLogCall;
+use Aagjalpankaj\Logstan\Concerns\IdentifiesLog;
 use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Analyser\Scope;
@@ -15,7 +15,7 @@ use PHPStan\Rules\Rule;
  */
 class LogInsightsRule implements Rule
 {
-    use LocatesLogCall;
+    use IdentifiesLog;
 
     /** @var array<string, array<string, mixed>> */
     private static array $logStats = [];

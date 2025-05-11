@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Aagjalpankaj\Logstan\Rules;
 
-use Aagjalpankaj\Logstan\Concerns\LocatesLogCall;
+use Aagjalpankaj\Logstan\Concerns\IdentifiesLog;
 use Aagjalpankaj\Logstan\Validators\LogContextValidator;
 use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
@@ -17,7 +17,7 @@ use PHPStan\Rules\RuleErrorBuilder;
  */
 class LogContextRule implements Rule
 {
-    use LocatesLogCall;
+    use IdentifiesLog;
 
     public function getNodeType(): string
     {
