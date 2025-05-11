@@ -25,14 +25,14 @@ class LogContextValidator
                 continue;
             }
 
-            if ($key === '' || $key === '0') {
+            if ($key === '') {
                 $errors[] = 'Log context contains an empty key.';
 
                 continue;
             }
 
-            if (in_array(preg_match('/^[a-z][a-zA-Z0-9]*$/', $key), [0, false], true)) {
-                $errors[] = sprintf('Log context key "%s" should be in camelCase format.', $key);
+            if (in_array(preg_match('/^[a-z][a-z0-9]*(_[a-z0-9]+)*$/', $key), [0, false], true)) {
+                $errors[] = sprintf('Log context key "%s" should be in snake_case format.', $key);
             }
 
             if (is_array($value) || is_object($value)) {

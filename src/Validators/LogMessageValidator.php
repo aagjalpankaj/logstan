@@ -6,13 +6,23 @@ namespace Aagjalpankaj\Logstan\Validators;
 
 class LogMessageValidator
 {
-    private const MAX_LENGTH = 50;
+    private const MAX_LENGTH = 120;
+
+    private const SENSITIVE_TERMS = [
+        'password',
+        'secret',
+        'key',
+        'apiKey',
+        'token',
+    ];
 
     public function validate(string $message): array
     {
         $errors = [];
 
-        if ($message === '' || $message === '0') {
+        $trimmedMessage = trim($message);
+
+        if ($trimmedMessage === '') {
             $errors[] = sprintf('Log message "%s" cannot be empty.', $message);
         }
 
@@ -20,16 +30,14 @@ class LogMessageValidator
             $errors[] = sprintf('Log message "%s" exceeds maximum length of %d characters.', $message, self::MAX_LENGTH);
         }
 
-        if (preg_match('/^[a-z]/', $message)) {
+        if (preg_match('/^[a-z]/', $trimmedMessage)) {
             $errors[] = sprintf('Log message "%s" should start with an uppercase letter.', $message);
         }
 
-        if (in_array(preg_match('/[.!?]$/', $message), [0, false], true)) {
-            $errors[] = sprintf('Log message "%s" should end with a punctuation mark (., !, or ?).', $message);
-        }
-
-        if (preg_match('/\b(password|secret|key)\b/i', $message)) {
-            $errors[] = sprintf('Log message "%s" contains sensitive information (password, secret, or key).', $message);
+        foreach (self::SENSITIVE_TERMS as $term) {
+            if (stripos($trimmedMessage, $term) !== false) {
+                $errors[] = sprintf('Log message "%s" contains sensitive information ("%s").', $message, $term);
+            }
         }
 
         return $errors;
