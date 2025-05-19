@@ -18,11 +18,41 @@ class LogMessageRuleTest extends RuleTestCase
         return new LogMessageRule;
     }
 
-    public function test_log_message(): void
+    public function testReportsEmptyLogMessages(): void
     {
         $this->analyse(
             [
-                __DIR__.'/../../Dataset/logs-messages.php',
+                __DIR__.'/../../Dataset/lm-empty.php',
+            ],
+            [
+                [
+                    'Log message "" cannot be empty.',
+                    7,
+                ],
+            ]
+        );
+    }
+
+    public function testReportsLongLogMessages(): void
+    {
+        $this->analyse(
+            [
+                __DIR__.'/../../Dataset/lm-exceeds-limit.php',
+            ],
+            [
+                [
+                    'Log message "User authentication failed after multiple attempts. The system has temporarily locked the account and sent a notification email to the registered address for security verification purposes." exceeds maximum length of 120 characters.',
+                    7,
+                ],
+            ]
+        );
+    }
+
+    public function testReportsNonUppercaseLogMessages(): void
+    {
+        $this->analyse(
+            [
+                __DIR__.'/../../Dataset/lm-starts-with-lowercase.php',
             ],
             [
                 [
@@ -31,7 +61,5 @@ class LogMessageRuleTest extends RuleTestCase
                 ],
             ]
         );
-
-        // TODO: Finish remaining testcases
     }
 }

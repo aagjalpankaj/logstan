@@ -3,6 +3,7 @@
   "exclude": [],
   "rules": {
 	"declare_strict_types": true,
-	"strict_comparison": true
+	"strict_comparison": true,
+	"php_unit_method_casing": false
   }
 }
