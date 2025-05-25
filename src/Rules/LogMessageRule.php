@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Aagjalpankaj\Logstan\Rules;
 
 use Aagjalpankaj\Logstan\Concerns\IdentifiesLog;
-use Aagjalpankaj\Logstan\Validators\LogMessageValidator;
+use Aagjalpankaj\Logstan\Concerns\SensitiveTerms;
 use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
-use PHPStan\Rules\RuleError;
 use PHPStan\Rules\RuleErrorBuilder;
 
 /**
@@ -19,6 +18,9 @@ use PHPStan\Rules\RuleErrorBuilder;
 class LogMessageRule implements Rule
 {
     use IdentifiesLog;
+    use SensitiveTerms;
+
+    private const MAX_LENGTH = 120;
 
     public function getNodeType(): string
     {
@@ -45,12 +47,34 @@ class LogMessageRule implements Rule
         }
 
         $message = $messageArg->value;
-        $errors = (new LogMessageValidator)->validate($message);
+        $errors = [];
+        $trimmedMessage = trim($message);
 
-        if ($errors !== []) {
-            return array_map(fn ($error): RuleError => RuleErrorBuilder::message($error)->build(), $errors);
+        if ($trimmedMessage === '') {
+            $errors[] = RuleErrorBuilder::message(sprintf('Log message "%s" cannot be empty.', $message))->build();
         }
 
-        return [];
+        if (strlen($message) > self::MAX_LENGTH) {
+            $errors[] = RuleErrorBuilder::message(
+                sprintf('Log message "%s" exceeds maximum length of %d characters.', $message, self::MAX_LENGTH)
+            )->build();
+        }
+
+        if (preg_match('/^[a-z]/', $trimmedMessage)) {
+            $errors[] = RuleErrorBuilder::message(
+                sprintf('Log message "%s" should start with an uppercase letter.', $message)
+            )->build();
+        }
+
+        foreach (self::SENSITIVE_TERMS as $term) {
+            if (stripos($trimmedMessage, $term) !== false) {
+
+                $errors[] = RuleErrorBuilder::message(
+                    sprintf('Log message "%s" contains sensitive information ("%s").', $message, $term)
+                )->build();
+            }
+        }
+
+        return $errors;
     }
 }
