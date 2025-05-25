@@ -50,15 +50,13 @@ class LogContextRuleTest extends RuleTestCase
 
     public function testReportsNonScalarContextValues(): void
     {
-        $this->markTestSkipped('temporarily skipped');
-
         $this->analyse(
             [
                 __DIR__.'/../../Dataset/lc-has-non-scalar-values.php',
             ],
             [
                 [
-                    'test',
+                    'Log context value of key "settings" must be scalar, null or array of scalar. "object{theme: \'dark\', notifications: true}&stdClass" provided.',
                     7,
                 ],
             ]

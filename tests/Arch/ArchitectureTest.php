@@ -19,7 +19,3 @@ arch('Rules')
     ->expect('Aagjalpankaj\Logstan\Rules')
     ->toHaveSuffix('Rule')
     ->toImplement('PHPStan\Rules\Rule');
-
-arch('Validators')
-    ->expect('Aagjalpankaj\Logstan\Validators')
-    ->toHaveSuffix('Validator');
