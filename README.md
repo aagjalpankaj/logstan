@@ -14,6 +14,8 @@
 ## About
 Logstan is a PHPStan extension designed for Laravel applications to enforce consistent logging practices. It helps developers maintain standardized logs across their projects.
 
+---
+
 <p align="center">
   <a href="#installation">Installation</a> |
   <a href="#usage">Usage</a> |
