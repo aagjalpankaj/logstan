@@ -80,12 +80,10 @@ class InsightsCommand extends Command
                 }
             }, message: 'Gathering log insights...');
 
-        // Only show PHPStan output in debug mode
         if ($input->getOption('debug')) {
             $output->write($process->getOutput());
         }
 
-        // Display insights from the collected data
         $this->displayInsights($output);
 
         return $process->isSuccessful() ? Command::SUCCESS : Command::FAILURE;
@@ -173,5 +171,11 @@ class InsightsCommand extends Command
 
         $output->writeln('');
         $output->writeln(sprintf('Total unique context keys: <comment>%d</comment>', count($contextKeyCounts)));
+
+        $output->writeln('');
+        $output->writeln('<info>Tips to Reduce Context Keys:</info>');
+        $output->writeln('- Reduce the number of context keys by consolidating similar data.');
+        $output->writeln('- Avoid using different keys to log the same data.');
+        $output->writeln('- Implement a logging policy to limit the number of context keys.');
     }
 }
