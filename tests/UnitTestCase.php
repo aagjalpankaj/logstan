@@ -4,9 +4,15 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use PHPUnit\Framework\TestCase;
+use PHPStan\Rules\Rule;
+use PHPStan\Testing\RuleTestCase;
 
-abstract class UnitTestCase extends TestCase
+abstract class UnitTestCase extends RuleTestCase
 {
-    //
+    protected Rule $rule;
+
+    protected function getRule(): Rule
+    {
+        return $this->rule;
+    }
 }
