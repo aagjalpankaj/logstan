@@ -8,6 +8,20 @@ beforeEach(function () {
     $this->rule = new LogContextRule;
 });
 
+it('if log context is non-array', function () {
+    $this->analyse(
+        [
+            __DIR__.'/../../Dataset/lc-non-array.php',
+        ],
+        [
+            [
+                'Log context must be an array.',
+                7,
+            ],
+        ]
+    );
+});
+
 it('reports camel case keys', function () {
     $this->analyse(
         [
@@ -29,7 +43,7 @@ it('reports log context exceeds key limit', function () {
         ],
         [
             [
-                'Log context has too many keys (11). Maximum allowed is 10.',
+                'Log context has too many keys (11). Maximum allowed are 10.',
                 7,
             ],
         ]

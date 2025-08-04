@@ -12,14 +12,37 @@
 </p>
 
 ## About
-Logstan is a PHPStan extension designed for Laravel applications to enforce consistent logging practices. It helps developers maintain standardized logs across their projects.
+LogStan is a PHPStan extension that helps you to enforce structured and consistent logging in Laravel.
+
+### Example Output
+```console
+./vendor/bin/logstan analyse
+
+ ------ -------------------------------------------------------------------------------------------- 
+  Line   Actions/CreateOrderAction.php                                                   
+ ------ -------------------------------------------------------------------------------------------- 
+  21     Log message "order created" should start with an uppercase letter.                                    
+  67     Log context key "orderId" should be in snake_case format.                                    
+  94     Log context has too many keys (11). Maximum allowed are 10.                                 
+ ------ -------------------------------------------------------------------------------------------- 
+
+ ------ --------------------------------------------------------------------------------------------
+  Line   Services/ShopifyService.php                                                                             
+ ------ -------------------------------------------------------------------------------------------- 
+  57     Log context value of key "order" must be scalar, null or array of scalar. 
+         "App\Models\Order" provided.   
+ ------ -------------------------------------------------------------------------------------------- 
+
+                                                                                                                        
+ [ERROR] Found 4 errors                                                                                                
+                                                                                                                     
+```
 
 ---
-
 <p align="center">
   <a href="#installation">Installation</a> |
   <a href="#usage">Usage</a> |
-  <a href="#logging-standards-covered">Logging standards</a>
+  <a href="#logging-standards-enforced">Logging standards enforced</a>
 </p>
 
 ---
@@ -37,14 +60,14 @@ composer require --dev aagjalpankaj/logstan
 ```bash
 ./vendor/bin/logstan analyse
 ```
-This command will scan your application and report any inconsistencies or potential problems.
+This command will scan your application and report any inconsistencies or potential problems with the logs in your application.
 
 ### Getting Insights
 
 ```bash
 ./vendor/bin/logstan insights
 ```
-This command provides insights about logs added in the application.
+This command provides insights about logs in your application.
 
 ### Help
 
@@ -54,18 +77,36 @@ For more information about available commands and options:
 ./vendor/bin/logstan --help
 ```
 
-## Logging standards covered
+## Logging standards enforced
 
-### Log Message
-- Non-empty messages required
-- Maximum message length (character limit)
-- Messages must start with uppercase letters
-- No sensitive information in message content
+Logstan ensures your Laravel application follows best practices for logging by enforcing the following standards:
+
+### Log Messages
+| Standard | Description |
+|----------|-------------|
+| ✅ **Non-empty requirement** | All log messages must contain meaningful content |
+| ✅ **Character limit** | Messages are validated against maximum length constraints |
+| ✅ **Proper capitalization** | Messages must begin with uppercase letters for consistency |
 
 ### Log Context
-- Context must be an array
-- Maximum of 10 context keys allowed
-- Keys must be non-empty strings in snake_case format
-- Values must be scalar or null (no arrays/objects are accepted)
-- Maximum value length of 100 characters
-- No sensitive information in context keys
+| Standard | Description |
+|----------|-------------|
+| ✅ **Array structure** | Context data must be provided as a properly formatted array |
+| ✅ **Key limit** | Maximum of 10 context keys to maintain readability |
+| ✅ **Naming convention** | Keys must use snake_case format and be non-empty strings |
+| ✅ **Data types** | Values restricted to scalar types or null (arrays/objects prohibited) |
+| ✅ **Value length** | Context values limited to 100 characters maximum |
+| ✅ **Security compliance** | Automatic detection and prevention of sensitive information in keys |
+
+
+## Contributing
+
+Found a bug or have a feature request? We'd love to hear from you!
+
+- 🐛 **Report Issues**: [Create an issue](https://github.com/aagjalpankaj/logstan/issues)
+- 💡 **Feature Requests**: [Start a discussion](https://github.com/aagjalpankaj/logstan/discussions)
+- 🤝 **Pull Requests**: Contributions are welcome!
+
+## License
+
+This package is open-sourced software licensed under the [MIT license](LICENSE.md).

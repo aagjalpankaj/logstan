@@ -124,7 +124,7 @@ class InsightsCommand extends Command
         }
 
         $output->writeln('');
-        $output->writeln('<info>📊 Log Usage Insights</info>');
+        $output->writeln('<info>Log Usage Insights</info>');
         $output->writeln('');
         $output->writeln(sprintf('Total log calls: <comment>%d</comment>', $totalCalls));
         $output->writeln('');
@@ -161,7 +161,7 @@ class InsightsCommand extends Command
         arsort($contextKeyCounts);
 
         $table = new Table($output);
-        $table->setHeaders(['Context Key', 'Count']);
+        $table->setHeaders(['Context Key', 'Occurrences']);
 
         foreach ($contextKeyCounts as $key => $count) {
             $table->addRow([$key, $count]);
@@ -173,9 +173,9 @@ class InsightsCommand extends Command
         $output->writeln(sprintf('Total unique context keys: <comment>%d</comment>', count($contextKeyCounts)));
 
         $output->writeln('');
-        $output->writeln('<info>Tips to Reduce Context Keys:</info>');
-        $output->writeln('- Reduce the number of context keys by consolidating similar data.');
-        $output->writeln('- Avoid using different keys to log the same data.');
-        $output->writeln('- Implement a logging policy to limit the number of context keys.');
+        $output->writeln('<info>💡 Tips:</info>');
+        $output->writeln('- 🔧 <comment>Context Optimization:</comment> Consolidate similar data to avoid key duplication and improve consistency.');
+        $output->writeln('- ⚡ <comment>Performance Impact:</comment> Excessive logging can significantly degrade application performance.');
+        $output->writeln('- 🎯 <comment>Best Practice:</comment> Use appropriate log levels and consider async logging for high-traffic applications.');
     }
 }

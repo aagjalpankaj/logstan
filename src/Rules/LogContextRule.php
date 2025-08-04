@@ -45,7 +45,7 @@ class LogContextRule implements Rule
 
         if (! $contextArg instanceof Node\Expr\Array_) {
             return [
-                RuleErrorBuilder::message('Log context must be an array')->build(),
+                RuleErrorBuilder::message('Log context must be an array.')->build(),
             ];
         }
 
@@ -53,7 +53,7 @@ class LogContextRule implements Rule
 
         if (count($contextArg->items) > self::MAX_KEYS) {
             $errors[] = RuleErrorBuilder::message(sprintf(
-                'Log context has too many keys (%d). Maximum allowed is %d.',
+                'Log context has too many keys (%d). Maximum allowed are %d.',
                 count($contextArg->items),
                 self::MAX_KEYS
             ))->build();
