@@ -1,0 +1,4 @@
+parameters:
+    logContext:
+        maxKeys: 10
+        caseStyle: snake_case

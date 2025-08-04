@@ -6,6 +6,7 @@ namespace Aagjalpankaj\Logstan\Rules;
 
 use Aagjalpankaj\Logstan\Concerns\IdentifiesLog;
 use Aagjalpankaj\Logstan\Concerns\SensitiveTerms;
+use Aagjalpankaj\Logstan\Config;
 use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Analyser\Scope;
@@ -21,7 +22,12 @@ class LogContextRule implements Rule
     use IdentifiesLog;
     use SensitiveTerms;
 
-    private const MAX_KEYS = 10;
+    private Config $config;
+
+    public function __construct()
+    {
+        $this->config = Config::load();
+    }
 
     public function getNodeType(): string
     {
@@ -45,17 +51,17 @@ class LogContextRule implements Rule
 
         if (! $contextArg instanceof Node\Expr\Array_) {
             return [
-                RuleErrorBuilder::message('Log context must be an array')->build(),
+                RuleErrorBuilder::message('Log context must be an array.')->build(),
             ];
         }
 
         $errors = [];
 
-        if (count($contextArg->items) > self::MAX_KEYS) {
+        if (count($contextArg->items) > $this->config->logContextMaxKeys) {
             $errors[] = RuleErrorBuilder::message(sprintf(
-                'Log context has too many keys (%d). Maximum allowed is %d.',
+                'Log context has too many keys (%d). Maximum allowed are %d.',
                 count($contextArg->items),
-                self::MAX_KEYS
+                $this->config->logContextMaxKeys
             ))->build();
         }
 
@@ -76,8 +82,15 @@ class LogContextRule implements Rule
                 $errors[] = RuleErrorBuilder::message('Log context contains an empty key.')->build();
             }
 
-            if (in_array(preg_match('/^[a-z][a-z0-9]*(_[a-z0-9]+)*$/', $key), [0, false], true)) {
-                $errors[] = RuleErrorBuilder::message(sprintf('Log context key "%s" should be in snake_case format.', $key))->build();
+            $caseStyle = $this->config->logContextCaseStyle;
+
+            $caseRegex = match ($caseStyle) {
+                'snake_case' => '/^[a-z][a-z0-9]*(_[a-z0-9]+)*$/',
+                'camelCase' => '/^[a-z][a-zA-Z0-9]+$/',
+            };
+
+            if (in_array(preg_match($caseRegex, $key), [0, false], true)) {
+                $errors[] = RuleErrorBuilder::message(sprintf('Log context key "%s" should be in %s format.', $key, $caseStyle))->build();
             }
 
             if (

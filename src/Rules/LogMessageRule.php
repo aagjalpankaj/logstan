@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Aagjalpankaj\Logstan\Rules;
 
 use Aagjalpankaj\Logstan\Concerns\IdentifiesLog;
-use Aagjalpankaj\Logstan\Concerns\SensitiveTerms;
 use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Analyser\Scope;
@@ -18,7 +17,6 @@ use PHPStan\Rules\RuleErrorBuilder;
 class LogMessageRule implements Rule
 {
     use IdentifiesLog;
-    use SensitiveTerms;
 
     private const MAX_LENGTH = 120;
 
@@ -64,15 +62,6 @@ class LogMessageRule implements Rule
             $errors[] = RuleErrorBuilder::message(
                 sprintf('Log message "%s" should start with an uppercase letter.', $message)
             )->build();
-        }
-
-        foreach (self::SENSITIVE_TERMS as $term) {
-            if (stripos($trimmedMessage, $term) !== false) {
-
-                $errors[] = RuleErrorBuilder::message(
-                    sprintf('Log message "%s" contains sensitive information ("%s").', $message, $term)
-                )->build();
-            }
         }
 
         return $errors;

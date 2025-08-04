@@ -22,7 +22,7 @@ it('reports empty log messages', function () {
     );
 });
 
-it('reports long log messages', function () {
+it('reports long log messages (limit 120 chars)', function () {
     $this->analyse(
         [
             __DIR__.'/../../Dataset/lm-exceeds-limit.php',
@@ -36,7 +36,7 @@ it('reports long log messages', function () {
     );
 });
 
-it('reports non uppercase log messages', function () {
+it('reports logs not starting with uppercase letter', function () {
     $this->analyse(
         [
             __DIR__.'/../../Dataset/lm-starts-with-lowercase.php',
@@ -49,8 +49,3 @@ it('reports non uppercase log messages', function () {
         ]
     );
 });
-
-function getRule(): LogMessageRule
-{
-    return new LogMessageRule;
-}
