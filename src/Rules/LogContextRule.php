@@ -6,6 +6,7 @@ namespace Aagjalpankaj\Logstan\Rules;
 
 use Aagjalpankaj\Logstan\Concerns\IdentifiesLog;
 use Aagjalpankaj\Logstan\Concerns\SensitiveTerms;
+use Aagjalpankaj\Logstan\Config;
 use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Analyser\Scope;
@@ -21,7 +22,12 @@ class LogContextRule implements Rule
     use IdentifiesLog;
     use SensitiveTerms;
 
-    private const MAX_KEYS = 10;
+    private Config $config;
+
+    public function __construct()
+    {
+        $this->config = Config::load();
+    }
 
     public function getNodeType(): string
     {
@@ -51,13 +57,18 @@ class LogContextRule implements Rule
 
         $errors = [];
 
-        if (count($contextArg->items) > self::MAX_KEYS) {
+        if (count($contextArg->items) > $this->config->logContextMaxKeys) {
             $errors[] = RuleErrorBuilder::message(sprintf(
                 'Log context has too many keys (%d). Maximum allowed are %d.',
                 count($contextArg->items),
-                self::MAX_KEYS
+                $this->config->logContextMaxKeys
             ))->build();
         }
+
+        $caseRegex = match ($this->config->logContextCaseStyle) {
+            'snake_case' => '/^[a-z][a-z0-9]*(_[a-z0-9]+)*$/',
+            'camelCase' => '/^[a-z][a-zA-Z0-9]+$/',
+        };
 
         foreach ($contextArg->items as $item) {
 
@@ -69,15 +80,19 @@ class LogContextRule implements Rule
             $valueType = $scope->getType($item->value);
 
             if (! is_string($key)) {
-                $errors[] = RuleErrorBuilder::message(sprintf('Log context key must be a string. Found: %s.', gettype($key)))->build();
+                $errors[] = RuleErrorBuilder::message(
+                    sprintf('Log context key must be a string. Found: %s.', gettype($key))
+                )->build();
             }
 
             if ($key === '') {
                 $errors[] = RuleErrorBuilder::message('Log context contains an empty key.')->build();
             }
 
-            if (in_array(preg_match('/^[a-z][a-z0-9]*(_[a-z0-9]+)*$/', $key), [0, false], true)) {
-                $errors[] = RuleErrorBuilder::message(sprintf('Log context key "%s" should be in snake_case format.', $key))->build();
+            if (in_array(preg_match($caseRegex, $key), [0, false], true)) {
+                $errors[] = RuleErrorBuilder::message(
+                    sprintf('Log context key "%s" should be in %s format.', $key, $this->config->logContextCaseStyle)
+                )->build();
             }
 
             if (

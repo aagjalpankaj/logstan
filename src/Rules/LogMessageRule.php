@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Aagjalpankaj\Logstan\Rules;
 
 use Aagjalpankaj\Logstan\Concerns\IdentifiesLog;
+use Aagjalpankaj\Logstan\Config;
 use PhpParser\Node;
 use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Analyser\Scope;
@@ -18,7 +19,12 @@ class LogMessageRule implements Rule
 {
     use IdentifiesLog;
 
-    private const MAX_LENGTH = 120;
+    private Config $config;
+
+    public function __construct()
+    {
+        $this->config = Config::load();
+    }
 
     public function getNodeType(): string
     {
@@ -52,9 +58,9 @@ class LogMessageRule implements Rule
             $errors[] = RuleErrorBuilder::message(sprintf('Log message "%s" cannot be empty.', $message))->build();
         }
 
-        if (strlen($message) > self::MAX_LENGTH) {
+        if (strlen($message) > $this->config->logMessageMaxLength) {
             $errors[] = RuleErrorBuilder::message(
-                sprintf('Log message "%s" exceeds maximum length of %d characters.', $message, self::MAX_LENGTH)
+                sprintf('Log message "%s" exceeds maximum length of %d characters.', $message, $this->config->logMessageMaxLength)
             )->build();
         }
 
