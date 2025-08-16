@@ -19,13 +19,6 @@ class LogMessageRule implements Rule
 {
     use IdentifiesLog;
 
-    private Config $config;
-
-    public function __construct()
-    {
-        $this->config = Config::load();
-    }
-
     public function getNodeType(): string
     {
         return StaticCall::class;
@@ -50,6 +43,7 @@ class LogMessageRule implements Rule
             return [];
         }
 
+        $config = Config::load();
         $message = $messageArg->value;
         $errors = [];
         $trimmedMessage = trim($message);
@@ -58,9 +52,9 @@ class LogMessageRule implements Rule
             $errors[] = RuleErrorBuilder::message(sprintf('Log message "%s" cannot be empty.', $message))->build();
         }
 
-        if (strlen($message) > $this->config->logMessageMaxLength) {
+        if (strlen($message) > $config->logMessageMaxLength) {
             $errors[] = RuleErrorBuilder::message(
-                sprintf('Log message "%s" exceeds maximum length of %d characters.', $message, $this->config->logMessageMaxLength)
+                sprintf('Log message "%s" exceeds maximum length of %d characters.', $message, $config->logMessageMaxLength)
             )->build();
         }
 

@@ -15,7 +15,7 @@
 LogStan is a PHPStan extension that helps you to enforce structured and consistent logging in Laravel.
 
 ### Example Output
-```console
+```bash
 ./vendor/bin/logstan analyse
 
  ------ -------------------------------------------------------------------------------------------- 
@@ -69,6 +69,13 @@ This command will scan your application and report any inconsistencies or potent
 ```
 This command provides insights about logs in your application.
 
+### Configuration (Optional)
+
+```bash
+cp ./vendor/aagjalpankaj/logstan/logstan.neon.dist logstan.neon 
+```
+You can override default presets in `logstan.neon`
+
 ### Help
 
 For more information about available commands and options:
@@ -104,8 +111,8 @@ Logstan ensures your Laravel application follows best practices for logging by e
 Found a bug or have a feature request? We'd love to hear from you!
 
 - 🐛 **Report Issues**: [Create an issue](https://github.com/aagjalpankaj/logstan/issues)
-- 💡 **Feature Requests**: [Start a discussion](https://github.com/aagjalpankaj/logstan/discussions)
-- 🤝 **Pull Requests**: Contributions are welcome!
+- 💡 **Feature Requests**: [Create an issue](https://github.com/aagjalpankaj/logstan/issues)
+- 🤝 **Pull Requests**: [Create PR](https://github.com/aagjalpankaj/logstan/pulls)
 
 ## License
 

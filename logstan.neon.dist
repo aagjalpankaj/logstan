@@ -1,6 +1,6 @@
 parameters:
     logContext:
         maxKeys: 10
-        caseStyle: snake_case
+        keyCaseStyle: snake_case
     logMessage:
         maxLength: 120
