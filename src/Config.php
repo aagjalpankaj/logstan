@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Aagjalpankaj\Logstan;
 
+use Aagjalpankaj\Logstan\Enums\CaseStyle;
 use Nette\Neon\Exception;
 use Nette\Neon\Neon;
 
@@ -11,7 +12,7 @@ readonly class Config
 {
     public function __construct(
         public int $logContextMaxKeys,
-        public string $logContextCaseStyle,
+        public CaseStyle $logContextKeyCaseStyle,
         public int $logMessageMaxLength,
     ) {}
 
@@ -24,8 +25,8 @@ readonly class Config
 
         return new self(
             logContextMaxKeys: $config['parameters']['logContext']['maxKeys'] ?? 10,
-            logContextCaseStyle: $config['parameters']['logContext']['caseStyle'] ?? 'snake_case',
-            logMessageMaxLength: $config['parameters']['logMessage']['maxLength'] ?? 1000,
+            logContextKeyCaseStyle: CaseStyle::from($config['parameters']['logContext']['keyCaseStyle']) ?? CaseStyle::SNAKE_CASE,
+            logMessageMaxLength: $config['parameters']['logMessage']['maxLength'] ?? 120,
         );
     }
 

@@ -7,7 +7,7 @@ use Aagjalpankaj\Logstan\Commands\AnalyseCommand;
 use Aagjalpankaj\Logstan\Commands\InsightsCommand;
 use Symfony\Component\Console\Application;
 
-$app = new Application('Logstan', '0.2.0');
+$app = new Application('Logstan', '0.3.0');
 
 $app->add(new AnalyseCommand());
 $app->add(new InsightsCommand());
