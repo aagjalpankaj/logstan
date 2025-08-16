@@ -12,6 +12,7 @@ readonly class Config
     public function __construct(
         public int $logContextMaxKeys,
         public string $logContextCaseStyle,
+        public int $logMessageMaxLength,
     ) {}
 
     /**
@@ -24,6 +25,7 @@ readonly class Config
         return new self(
             logContextMaxKeys: $config['parameters']['logContext']['maxKeys'] ?? 10,
             logContextCaseStyle: $config['parameters']['logContext']['caseStyle'] ?? 'snake_case',
+            logMessageMaxLength: $config['parameters']['logMessage']['maxLength'] ?? 1000,
         );
     }
 

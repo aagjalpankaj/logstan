@@ -65,6 +65,11 @@ class LogContextRule implements Rule
             ))->build();
         }
 
+        $caseRegex = match ($this->config->logContextCaseStyle) {
+            'snake_case' => '/^[a-z][a-z0-9]*(_[a-z0-9]+)*$/',
+            'camelCase' => '/^[a-z][a-zA-Z0-9]+$/',
+        };
+
         foreach ($contextArg->items as $item) {
 
             if (! $item->key instanceof Node\Scalar\String_) {
@@ -75,22 +80,19 @@ class LogContextRule implements Rule
             $valueType = $scope->getType($item->value);
 
             if (! is_string($key)) {
-                $errors[] = RuleErrorBuilder::message(sprintf('Log context key must be a string. Found: %s.', gettype($key)))->build();
+                $errors[] = RuleErrorBuilder::message(
+                    sprintf('Log context key must be a string. Found: %s.', gettype($key))
+                )->build();
             }
 
             if ($key === '') {
                 $errors[] = RuleErrorBuilder::message('Log context contains an empty key.')->build();
             }
 
-            $caseStyle = $this->config->logContextCaseStyle;
-
-            $caseRegex = match ($caseStyle) {
-                'snake_case' => '/^[a-z][a-z0-9]*(_[a-z0-9]+)*$/',
-                'camelCase' => '/^[a-z][a-zA-Z0-9]+$/',
-            };
-
             if (in_array(preg_match($caseRegex, $key), [0, false], true)) {
-                $errors[] = RuleErrorBuilder::message(sprintf('Log context key "%s" should be in %s format.', $key, $caseStyle))->build();
+                $errors[] = RuleErrorBuilder::message(
+                    sprintf('Log context key "%s" should be in %s format.', $key, $this->config->logContextCaseStyle)
+                )->build();
             }
 
             if (
